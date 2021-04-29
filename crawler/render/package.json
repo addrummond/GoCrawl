@@ -1,0 +1,15 @@
+{
+  "name": "render",
+  "version": "1.0.0",
+  "description": "",
+  "main": "render.js",
+  "scripts": {
+    "test": "mocha render.test.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2"
+  }
+}
