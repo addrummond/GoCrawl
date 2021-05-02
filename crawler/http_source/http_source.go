@@ -115,10 +115,10 @@ func parseHtml(s *HttpSource, newPath string, reader io.Reader) (outs S.Outs) {
 						tagNameBytes, _ := z.TagName()
 						tagName := string(tagNameBytes)
 
-						if _, already := existingLinks[url]; !already && tagName == "a" {
+						if !existingLinks[url] && tagName == "a" {
 							existingLinks[url] = true
 							outs.Links = append(outs.Links, S.Link{Url: url, Source: &newSource})
-						} else if _, already := existingAssets[url]; !already {
+						} else if !existingAssets[url] {
 							existingAssets[url] = true
 							outs.Assets = append(outs.Assets, S.Asset{Url: url})
 						}
