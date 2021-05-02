@@ -107,7 +107,6 @@ func parseHtml(s *HttpSource, newPath string, reader io.Reader) (outs S.Outs) {
 
 			if name == "href" || name == "src" {
 				url, ok := normalizeUrl(s.protocol, s.host, newPath, string(val))
-				//				fmt.Fprintf(os.Stderr, "URL %v %v %v\n", string(val), ok, url)
 				if ok {
 					newSource, err := Get(url, s.errorHandler)
 					if err != nil {
