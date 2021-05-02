@@ -76,7 +76,7 @@ func ExportHtml(node *G.Node) string {
 	<!DOCTYPE html>
 	<html>
 	<head>
-	  <title>Graph</title>
+	  <title>Graph for %s</title>
 		<style>
 		  body {
 				width: 100vw;
@@ -102,5 +102,5 @@ func ExportHtml(node *G.Node) string {
 	<body>
 	</body>
 	</html>
-	`, cytoscapeSrc, stripPrefixJson, marshaledLinks, marshaledNodeMetadata, renderSrc)
+	`, node.Url, cytoscapeSrc, stripPrefixJson, marshaledLinks, marshaledNodeMetadata, renderSrc)
 }
