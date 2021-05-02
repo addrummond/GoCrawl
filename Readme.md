@@ -13,7 +13,7 @@ Crawl a web page:
 go run main.go http://example.com > example.com.html
 ```
 
-The program outputs the HTML page to stdout and a request log to stderr.
+The program prints the HTML page to stdout and a request log to stderr.
 
 ## Graph format
 
@@ -27,13 +27,13 @@ You can click and drag nodes in the graph to modify the layout.
 
 ## Command line options
 
+**Go's command line parser requires flags to come before the URL.**
+
 Option     | Default | Description                                                    |
 ---------- | ------- | -------------------------------------------------------------- |
 -maxdepth  | 30      | The maximum depth of the traversal from the root.              |
 -maxreqs   | 200     | The maximum number of HTTP requests to make before halting.    |
 -noassets  |         | If this flag is present, assets are not included in the graph. |
-
-**Go's command line parser requires flags to come before the URL.**
 
 Usage:
 
