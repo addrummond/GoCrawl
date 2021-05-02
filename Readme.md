@@ -2,6 +2,8 @@
 
 A simple web crawler that outputs an HTML page with an interactive graph.
 
+**This is a toy project written for a coding challenge.**
+
 
 ## Basic usage
 
