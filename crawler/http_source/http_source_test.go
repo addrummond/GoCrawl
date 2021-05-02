@@ -103,3 +103,28 @@ func TestNormalizeUrl(t *testing.T) {
 		}
 	}
 }
+
+func TestHostMatches(t *testing.T) {
+	type test struct {
+		host1          string
+		host2          string
+		expectedResult bool
+	}
+
+	tests := []test{
+		{"", "", true},
+		{"foo.com", "foo.com", true},
+		{"foo.com", "bar.com", false},
+		{"foo.com", "sub.foo.com", true},
+		{"sub.foo.com", "foo.com", false},
+		{"foo.com", "sub.sub.foo.com", true},
+		{"sub.sub.foo.com", "foo.com", false},
+	}
+
+	for _, tst := range tests {
+		matches := hostMatches(tst.host1, tst.host2)
+		if matches != tst.expectedResult {
+			t.Errorf("Test if %v matches %v; expected %v, got %v\n", tst.host2, tst.host1, tst.expectedResult, matches)
+		}
+	}
+}
