@@ -52,5 +52,5 @@ go test ./...
 Run JS tests:
 
 ```sh
-cd crawler/render && npm test
+(cd crawler/render && npm test)
 ```
