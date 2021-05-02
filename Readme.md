@@ -15,6 +15,11 @@ go run main.go http://example.com > example.com.html
 
 The program prints the HTML page to stdout and a request log to stderr.
 
+## Domain restriction
+
+Only pages on the original domain (or subdomains thereof) will be crawled. Links
+to other domains are not shown in the graph.
+
 ## Graph format
 
 The root node is shown in red. Nodes that are referenced via `<a>` elements are
