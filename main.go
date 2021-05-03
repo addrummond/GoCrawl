@@ -44,7 +44,7 @@ func handleError(httpUrl string, err error) {
 	fmt.Fprintf(os.Stderr, "Error for %v: %v\n", httpUrl, err)
 }
 
-type CommandArgs struct {
+type commandArgs struct {
 	url            string
 	depthLimit     uint64
 	nRequestsLimit uint64
@@ -54,7 +54,7 @@ type CommandArgs struct {
 const defaultDepthLimit = 30
 const defaultNRequestsLimit = 200
 
-func getCommandArgs(usageOutput io.Writer, argv []string) (args CommandArgs, err error) {
+func getCommandArgs(usageOutput io.Writer, argv []string) (args commandArgs, err error) {
 	flagSet := flag.NewFlagSet("", flag.ContinueOnError)
 	flagSet.SetOutput(usageOutput)
 
