@@ -33,15 +33,13 @@ func Traverse(node *Node, f func(node *Node)) {
 	visited := make(map[*Node]bool)
 
 	for {
-		if _, haveVisited := visited[node]; !haveVisited {
+		if !visited[node] {
 			visited[node] = true
 			f(node)
 
 			for i := range node.Out {
 				e := &node.Out[i]
-				if _, haveVisited := visited[e.Node]; !haveVisited {
-					stack = append(stack, e.Node)
-				}
+				stack = append(stack, e.Node)
 			}
 		}
 
