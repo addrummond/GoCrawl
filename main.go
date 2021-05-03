@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 
 	C "multiverse.io/crawler/crawler"
@@ -12,7 +14,10 @@ import (
 )
 
 func main() {
-	args := getCommandArgs()
+	args, err := getCommandArgs(os.Stderr, os.Args[1:])
+	if err != nil {
+		os.Exit(1)
+	}
 
 	source, err := H.Get(args.url, handleError)
 	if err != nil {
@@ -49,20 +54,25 @@ type CommandArgs struct {
 const defaultDepthLimit = 30
 const defaultNRequestsLimit = 200
 
-func getCommandArgs() (args CommandArgs) {
-	flagSet := flag.NewFlagSet("", flag.ExitOnError)
+func getCommandArgs(usageOutput io.Writer, argv []string) (args CommandArgs, err error) {
+	flagSet := flag.NewFlagSet("", flag.ContinueOnError)
+	flagSet.SetOutput(usageOutput)
 
 	flagSet.Uint64Var(&args.depthLimit, "maxdepth", defaultDepthLimit, "the maximum depth of the traversal from the root")
 	flagSet.Uint64Var(&args.nRequestsLimit, "maxreqs", defaultNRequestsLimit, "the maximum number of HTTP requests to make before halting")
 	flagSet.BoolVar(&args.noAssets, "noassets", false, "if this flag is present, assets are not included in the graph")
 
-	flagSet.Parse(os.Args[1:])
+	if err = flagSet.Parse(argv); err != nil {
+		return
+	}
+
+	if flagSet.NArg() != 1 {
+		err = errors.New("You must provide exactly one URL.\n")
+		fmt.Fprintf(usageOutput, "%v", err)
+		return
+	}
 
 	args.url = flagSet.Arg(0)
-	if args.url == "" {
-		fmt.Fprintf(os.Stderr, "You must provide a URL.\n")
-		os.Exit(1)
-	}
 
 	return
 }
