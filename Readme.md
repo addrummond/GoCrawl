@@ -55,7 +55,7 @@ Run Go tests:
 go test ./...
 ```
 
-Run JS tests:
+Run JS tests (NodeJs >= 15.0):
 
 ```sh
 (cd crawler/render && npm test)
