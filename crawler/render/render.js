@@ -119,6 +119,8 @@ function getNodeRows(graph, nodeMetadata) {
   withMetadata = withMetadata.sort(([url1, md1], [url2, md2]) => {
     if (graph[url1].length == graph[url2].length)
       return md2.Popularity - md1.Popularity;
+    if (graph[url2].length == graph[url1].length)
+      return url1.localeCompare(url2); // they are equal in the order; sort lexicographically for determinism
     return graph[url2].length - graph[url1].length;
   });
   let nodeToRow = {};
