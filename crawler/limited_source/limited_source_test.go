@@ -20,7 +20,7 @@ func TestLimitedSource(t *testing.T) {
 	}
 
 	source := &MS.MockSource{Universe: &universe, Url: "/"}
-	limitedSource := Get(
+	limitedSource := MakeSource(
 		source,
 		10, // maxTotalRequests
 		2,  // maxDepth

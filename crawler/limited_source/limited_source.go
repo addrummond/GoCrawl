@@ -50,7 +50,7 @@ func (s *LimitedSource) GetOuts() S.Outs {
 	}
 }
 
-func Get(source S.Source, maxTotalRequests, maxDepth uint64) *LimitedSource {
+func MakeSource(source S.Source, maxTotalRequests, maxDepth uint64) *LimitedSource {
 	var totalRequests uint64
 
 	return &LimitedSource{

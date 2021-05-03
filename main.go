@@ -19,13 +19,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	source, err := H.Get(args.url, handleError)
+	source, err := H.MakeSource(args.url, handleError)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
-	limitedSource := L.Get(&source, args.nRequestsLimit, args.depthLimit)
+	limitedSource := L.MakeSource(&source, args.nRequestsLimit, args.depthLimit)
 
 	var assetsMode C.AssetsMode
 	if args.noAssets {

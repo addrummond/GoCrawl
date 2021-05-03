@@ -38,7 +38,7 @@ type HttpSource struct {
 	errorHandler func(url string, err error)
 }
 
-func Get(u string, errorHandler func(errorUrl string, err error)) (HttpSource, error) {
+func MakeSource(u string, errorHandler func(errorUrl string, err error)) (HttpSource, error) {
 	var s HttpSource
 
 	parsed, err := url.Parse(u)
@@ -108,7 +108,7 @@ func parseHtml(s *HttpSource, newPath string, reader io.Reader) (outs S.Outs) {
 			if name == "href" || name == "src" {
 				url, ok := normalizeUrl(s.protocol, s.host, newPath, string(val))
 				if ok {
-					newSource, err := Get(url, s.errorHandler)
+					newSource, err := MakeSource(url, s.errorHandler)
 					if err != nil {
 						s.errorHandler(url, err)
 					} else {
