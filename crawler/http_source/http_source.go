@@ -135,12 +135,12 @@ func tokenize(z *H.Tokenizer, f func(tagName string, attributes map[string]strin
 		}
 
 		tagNameBytes, _ := z.TagName()
-		tagName := strings.ToLower(string(tagNameBytes))
+		tagName := string(tagNameBytes)
 
 		attributes := make(map[string]string)
 		for {
 			nameBytes, valBytes, more := z.TagAttr()
-			nameString := strings.ToLower(string(nameBytes))
+			nameString := string(nameBytes)
 
 			if nameString == "href" || nameString == "src" {
 				attributes[nameString] = string(valBytes)
