@@ -24,9 +24,9 @@ func (s *LimitedSource) GetUrl() string {
 func (s *LimitedSource) GetOuts() S.Outs {
 	// GetOuts() will be called from multiple threads, so we must use an atomic
 	// update for the request counter.
-	atomic.AddUint64(s.totalRequestsPtr, 1)
+	newTotalRequests := atomic.AddUint64(s.totalRequestsPtr, 1)
 
-	if s.depth > s.maxDepth || *s.totalRequestsPtr > s.maxTotalRequests {
+	if s.depth > s.maxDepth || newTotalRequests > s.maxTotalRequests {
 		return S.Outs{}
 	}
 
