@@ -64,7 +64,6 @@ func (s *HttpSource) GetUrl() string {
 
 func (s *HttpSource) GetOuts() (outs S.Outs) {
 	fmt.Fprintf(os.Stderr, "GET %v\n", s.url)
-
 	resp, err := http.Get(s.url)
 	if err != nil {
 		s.errorHandler(s.url, err)
@@ -95,44 +94,65 @@ func parseHtml(s *HttpSource, newPath string, reader io.Reader) (outs S.Outs) {
 	existingLinks := make(map[string]bool)
 	existingAssets := make(map[string]bool)
 
+	tokenize(z, func(tagName string, attributes map[string]string) {
+		var url string
+		if href := attributes["href"]; href != "" {
+			url = href
+		} else if src := attributes["src"]; src != "" {
+			url = src
+		} else {
+			return
+		}
+
+		normalizedUrl, ok := normalizeUrl(s.protocol, s.host, newPath, url)
+		if !ok {
+			return
+		}
+
+		newSource, err := MakeSource(normalizedUrl, s.errorHandler)
+		if err != nil {
+			s.errorHandler(normalizedUrl, err)
+			return
+		}
+
+		if !existingLinks[normalizedUrl] && tagName == "a" {
+			existingLinks[normalizedUrl] = true
+			outs.Links = append(outs.Links, S.Link{Url: normalizedUrl, Source: &newSource})
+		} else if !existingAssets[normalizedUrl] {
+			existingAssets[normalizedUrl] = true
+			outs.Assets = append(outs.Assets, S.Asset{Url: normalizedUrl})
+		}
+	})
+
+	return outs
+}
+
+func tokenize(z *H.Tokenizer, f func(tagName string, attributes map[string]string)) {
 	for {
 		tt := z.Next()
 		if tt == H.ErrorToken && z.Err() == io.EOF {
 			break
 		}
 
+		tagNameBytes, _ := z.TagName()
+		tagName := strings.ToLower(string(tagNameBytes))
+
+		attributes := make(map[string]string)
 		for {
-			nameBytes, val, more := z.TagAttr()
-			name := string(nameBytes)
+			nameBytes, valBytes, more := z.TagAttr()
+			nameString := strings.ToLower(string(nameBytes))
 
-			if name == "href" || name == "src" {
-				url, ok := normalizeUrl(s.protocol, s.host, newPath, string(val))
-				if ok {
-					newSource, err := MakeSource(url, s.errorHandler)
-					if err != nil {
-						s.errorHandler(url, err)
-					} else {
-						tagNameBytes, _ := z.TagName()
-						tagName := string(tagNameBytes)
-
-						if !existingLinks[url] && tagName == "a" {
-							existingLinks[url] = true
-							outs.Links = append(outs.Links, S.Link{Url: url, Source: &newSource})
-						} else if !existingAssets[url] {
-							existingAssets[url] = true
-							outs.Assets = append(outs.Assets, S.Asset{Url: url})
-						}
-					}
-				}
+			if nameString == "href" || nameString == "src" {
+				attributes[nameString] = string(valBytes)
 			}
 
 			if !more {
 				break
 			}
 		}
-	}
 
-	return outs
+		f(tagName, attributes)
+	}
 }
 
 func normalizeUrl(protocol, host, basePath, httpUrl string) (string, bool) {

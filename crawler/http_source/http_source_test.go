@@ -11,7 +11,7 @@ func TestParseHtml(t *testing.T) {
 	<a href="http://otherdomain.com/link1">Foo!</a>
 	<p>Blah blah blah</p>
 	<link rel="stylesheet" href="foo.css">
-	<img src="foo.jpeg">
+	<imggg src="foo.jpeg">
 	<img src="http://otherdomain.com/foo.jpeg">
 	`
 
@@ -46,7 +46,7 @@ func TestParseHtmlErrorHandling(t *testing.T) {
 	<a href="http://otherdomain.com/link1">Foo!</a>
 	</pp>Blah blah blah</p>
 	<linkk rel="stylesheet" href="foo.css">
-	<img src="foo.jpeg"
+	<imgg src="foo.jpeg">
 	<img src="http://otherdomain.com/foo.jpeg">
 	`
 
@@ -62,7 +62,7 @@ func TestParseHtmlErrorHandling(t *testing.T) {
 	)
 
 	if len(outs.Links) != 1 || len(outs.Assets) != 2 {
-		t.Errorf("Unexpected number of links/assets")
+		t.Errorf("Unexpected number of links/assets: %v %v\n", len(outs.Links), len(outs.Assets))
 	}
 
 	if outs.Links[0].Url != "http://foo.com/link1" || outs.Assets[0].Url != "http://foo.com/foo.css" || outs.Assets[1].Url != "http://foo.com/foo.jpeg" {
