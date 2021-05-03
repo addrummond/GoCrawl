@@ -25,7 +25,8 @@ to other domains are not shown in the graph.
 The root node is shown in red. Nodes that are referenced via `<a>` elements are
 shown in blue. Nodes that are referenced only by elements other than `<a>` are
 regarded as "assets" and shown in grey. Assets are not retrieved (and hence not
-parsed for further pages to crawl).
+parsed for further pages to crawl). Only documents sent with a content type of
+`text/html` are parsed for links.
 
 You can click and drag nodes in the graph to modify the layout.
 
