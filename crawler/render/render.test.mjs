@@ -29,7 +29,7 @@ describe('getNodeRows', () => {
     graph.B = [null];
     graph.C = [null, null];
     graph.D = [null];
-    graph.E = [null,null];
+    graph.E = [null, null];
     graph.F = [null];
 
     metadata.A = {Popularity: 4};
