@@ -17,7 +17,7 @@ The program prints the HTML page to stdout and a request log to stderr.
 
 ## Domain restriction
 
-Only pages on the original domain (or subdomains thereof will be crawled. Links
+Only pages on the original domain (or subdomains thereof) will be crawled. Links
 to other domains are not shown in the graph.
 
 ## Graph format
