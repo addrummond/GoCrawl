@@ -49,7 +49,7 @@ go run main.go http://example.com [-maxdepth INT] [-maxreqs INT] [-noassets] <UR
 
 ## Development notes
 
-Run Go tests:
+Run Go tests (Go >= 1.16):
 
 ```sh
 go test ./...
