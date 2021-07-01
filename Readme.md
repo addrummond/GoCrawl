@@ -44,7 +44,7 @@ Option     | Default | Description                                              
 Usage:
 
 ```sh
-go run main.go http://example.com [-maxdepth INT] [-maxreqs INT] [-noassets] <URL>
+go run main.go [-maxdepth INT] [-maxreqs INT] [-noassets] <URL>
 ```
 
 ## Development notes
