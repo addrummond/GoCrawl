@@ -34,7 +34,6 @@ type HttpSource struct {
 	host         string // only load from this domain
 	protocol     string // use this protocol by default for relative links
 	path         string
-	contents     *string
 	errorHandler func(url string, err error)
 }
 
@@ -95,12 +94,8 @@ func parseHtml(s *HttpSource, newPath string, reader io.Reader) (outs S.Outs) {
 	existingAssets := make(map[string]bool)
 
 	tokenize(z, func(tagName string, attributes map[string]string) {
-		var url string
-		if href := attributes["href"]; href != "" {
-			url = href
-		} else if src := attributes["src"]; src != "" {
-			url = src
-		} else {
+		url, ok := getUrlFromTagAttributes(attributes)
+		if !ok {
 			return
 		}
 
@@ -153,6 +148,16 @@ func tokenize(z *H.Tokenizer, f func(tagName string, attributes map[string]strin
 
 		f(tagName, attributes)
 	}
+}
+
+func getUrlFromTagAttributes(attributes map[string]string) (string, bool) {
+	if href := attributes["href"]; href != "" {
+		return href, true
+	}
+	if src := attributes["src"]; src != "" {
+		return src, true
+	}
+	return "", false
 }
 
 func normalizeUrl(protocol, host, basePath, httpUrl string) (string, bool) {
