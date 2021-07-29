@@ -25,7 +25,7 @@ const (
 	AssetsModeIncludeAssets
 )
 
-// Crawl constructs a graph by crawling a sites links and assets from a root
+// Crawl constructs a graph by crawling a site's links and assets from a root
 // source.
 func Crawl(source S.Source, assetsMode AssetsMode) *G.Node {
 	root := &G.Node{
