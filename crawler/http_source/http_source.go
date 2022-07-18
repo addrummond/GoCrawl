@@ -71,6 +71,7 @@ func (s *HttpSource) GetOuts() (outs S.Outs) {
 
 	if resp.StatusCode != 200 {
 		s.errorHandler(s.url, &StatusCodeError{statusCode: resp.Status})
+		return outs
 	}
 
 	contentType := resp.Header["Content-Type"]
