@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 
 	H "golang.org/x/net/html"
 	S "multiverse.io/crawler/crawler/source"
@@ -63,7 +64,8 @@ func (s *HttpSource) GetUrl() string {
 
 func (s *HttpSource) GetOuts() (outs S.Outs) {
 	fmt.Fprintf(os.Stderr, "GET %v\n", s.url)
-	resp, err := http.Get(s.url)
+	client := http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Get(s.url)
 	if err != nil {
 		s.errorHandler(s.url, err)
 		return
